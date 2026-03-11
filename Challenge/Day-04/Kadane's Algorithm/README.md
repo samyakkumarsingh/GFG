@@ -28,7 +28,6 @@ currSum = max(arr[i], currSum + arr[i])
 
 Track the maximum value encountered.
 
----
 
 ## Complexity
 
