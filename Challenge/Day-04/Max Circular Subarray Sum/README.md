@@ -37,8 +37,6 @@ max(NormalMax, CircularSum)
 Edge case:
 If all elements are negative return normal max.
 
----
-
 ## Complexity
 
 Time: O(n)  
