@@ -1,36 +1,36 @@
-import java.util.Arrays;
+
 
 class Solution {
+    int[][] dp;
+
     public int knapsack(int W, int val[], int wt[]) {
         int n = val.length;
-        // Size columns to W + 1 so dp[index][W] is valid
-        int[][] dp = new int[n][W + 1];
-        for (int[] row : dp) {
-            Arrays.fill(row, -1);
+        dp = new int[1002][1002];
+
+        // Change i < n to i <= n
+        for(int i = 0; i <= n; i++) {
+            Arrays.fill(dp[i], -1);
         }
-        
-        return rec(n - 1, W, val, wt, dp);
+
+        return solve(W, val, wt, n);
     }
-    
-    public int rec(int index, int remwt, int val[], int wt[], int[][] dp) {
-        // Base Case: No items left or no capacity left
-        if (index < 0 || remwt == 0) {
+
+    public int solve(int W, int[] val, int[] wt, int n) {
+        if (W == 0 || n == 0) {
             return 0;
         }
-            
-        // Return cached result if already calculated
-        if (dp[index][remwt] != -1)
-            return dp[index][remwt];
-            
-        int pick = 0;
-        // Only pick if the item fits in the remaining weight
-        if (wt[index] <= remwt) {
-            pick = rec(index - 1, remwt - wt[index], val, wt, dp) + val[index]; // Added dp
+
+        if (dp[n][W] != -1) {
+            return dp[n][W];
         }
-        
-        int notpick = rec(index - 1, remwt, val, wt, dp); // Added dp
-        
-        // Memoize and return the result
-        return dp[index][remwt] = Math.max(pick, notpick);
+
+        if (wt[n-1] <= W) {
+            return dp[n][W] = Math.max(
+                val[n-1] + solve(W - wt[n-1], val, wt, n-1), 
+                solve(W, val, wt, n-1)
+            );
+        } else {
+            return dp[n][W] = solve(W, val, wt, n-1);
+        }
     }
 }
